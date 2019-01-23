@@ -19,8 +19,9 @@ using namespace mrpt::utils;
 #else
 #include <mrpt/img/TColor.h>
 using namespace mrpt::img;
+using mrpt::utils::TColor;
+using mrpt::utils::TColorf;
 #endif
-
 namespace mvsim
 {
 class GroundGrid : public WorldElementBase
