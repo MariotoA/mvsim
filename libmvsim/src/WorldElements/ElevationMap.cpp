@@ -17,6 +17,19 @@
 #include <mrpt/tfest.h>  // least-squares methods
 #include <rapidxml.hpp>
 
+#include <mrpt/version.h>
+#if MRPT_VERSION<0x199 
+#include <mrpt/utils/TMatchingPair.h>
+#include <mrpt/utils/CImage.h>
+using namespace mrpt::utils;
+#else
+#include <mrpt/tfest/TMatchingPair.h>
+#include <mrpt/img/CImage.h>
+using namespace mrpt::tfest;
+using namespace mrpt::img;
+#endif
+
+
 using namespace rapidxml;
 using namespace mvsim;
 using namespace std;
@@ -53,7 +66,7 @@ void ElevationMap::loadConfigFrom(const rapidxml::xml_node<char>* root)
 	mrpt::math::CMatrixFloat elevation_data;
 	if (!sElevationImgFile.empty())
 	{
-		mrpt::utils::CImage imgElev;
+		CImage imgElev;
 		if (!imgElev.loadFromFile(
 				sElevationImgFile, 0 /*force load grayscale*/))
 			throw std::runtime_error(
@@ -64,7 +77,7 @@ void ElevationMap::loadConfigFrom(const rapidxml::xml_node<char>* root)
 		// Scale: [0,1] => [min_z,max_z]
 		imgElev.getAsMatrix(
 			elevation_data);  // Get image normalized in range [0,1]
-		ASSERT_(img_min_z != img_max_z)
+		ASSERT_(img_min_z != img_max_z);
 		elevation_data.adjustRange(img_min_z, img_max_z);
 	}
 	else
@@ -73,7 +86,7 @@ void ElevationMap::loadConfigFrom(const rapidxml::xml_node<char>* root)
 	}
 
 	// Load texture (optional):
-	mrpt::utils::CImage mesh_image;
+	CImage mesh_image;
 	bool has_mesh_image = false;
 	if (!sTextureImgFile.empty())
 	{
@@ -92,8 +105,8 @@ void ElevationMap::loadConfigFrom(const rapidxml::xml_node<char>* root)
 
 	if (has_mesh_image)
 	{
-		ASSERT_EQUAL_(mesh_image.getWidth(), (size_t)elevation_data.cols())
-		ASSERT_EQUAL_(mesh_image.getHeight(), (size_t)elevation_data.rows())
+		ASSERT_EQUAL_(mesh_image.getWidth(), (size_t)elevation_data.cols());
+		ASSERT_EQUAL_(mesh_image.getHeight(), (size_t)elevation_data.rows());
 
 		m_gl_mesh->assignImage(mesh_image);
 		m_gl_mesh->setZ(elevation_data);
@@ -120,7 +133,7 @@ void ElevationMap::gui_update(mrpt::opengl::COpenGLScene& scene)
 	ASSERTMSG_(
 		m_gl_mesh,
 		"ERROR: Can't render Mesh before loading it! Have you called "
-		"loadConfigFrom() first?")
+		"loadConfigFrom() first?");
 
 	// 1st time call?? -> Create objects
 	if (m_first_scene_rendering)
@@ -137,7 +150,7 @@ void ElevationMap::simul_pre_timestep(const TSimulContext& context)
 	// 2) Apply gravity force
 	const double gravity = getWorldObject()->get_gravity();
 
-	ASSERT_(m_gl_mesh)
+	ASSERT_(m_gl_mesh);
 	// const mrpt::opengl::CMesh * mesh = m_gl_mesh.pointer();
 
 	const World::TListVehicles& lstVehs = this->m_world->getListOfVehicles();
@@ -177,7 +190,7 @@ void ElevationMap::simul_pre_timestep(const TSimulContext& context)
 				const Wheel& wheel = itVeh->second->getWheelInfo(iW);
 
 				// Local frame
-				mrpt::utils::TMatchingPair corr;
+				TMatchingPair corr;
 
 				corr.other_idx = iW;
 				corr.other_x = wheel.x;
@@ -269,7 +282,7 @@ float calcz(
 {
 	const float det =
 		(p2.x - p3.x) * (p1.y - p3.y) + (p3.y - p2.y) * (p1.x - p3.x);
-	ASSERT_(det != 0.0f)
+	ASSERT_(det != 0.0f);
 
 	const float l1 =
 		((p2.x - p3.x) * (y - p3.y) + (p3.y - p2.y) * (x - p3.x)) / det;

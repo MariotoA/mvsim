@@ -39,10 +39,10 @@ void Wheel::getAs3DObject(mrpt::opengl::CSetOfObjects& obj)
 
 	auto gl_wheel = mrpt::opengl::CCylinder::Create(
 			0.5 * diameter, 0.5 * diameter, this->width, 15, 1);
-	gl_wheel->setColor(TColorf(color));
+	gl_wheel->setColor(mrpt::img::TColorf(color));
 	gl_wheel->setPose(
 		mrpt::poses::CPose3D(
-			0, 0.5 * width, 0, 0, 0, mrpt::utils::DEG2RAD(90)));
+			0, 0.5 * width, 0, 0, 0, mrpt::DEG2RAD(90)));
 
 	auto gl_wheel_frame = mrpt::opengl::CSetOfObjects::Create();
 	gl_wheel_frame->insert(gl_wheel);
@@ -59,7 +59,7 @@ void Wheel::getAs3DObject(mrpt::opengl::CSetOfObjects& obj)
 
 void Wheel::loadFromXML(const rapidxml::xml_node<char>* xml_node)
 {
-	ASSERT_(xml_node)
+	ASSERT_(xml_node);
 	// Parse attributes:
 	// <l_wheel pos="0.0 -0.5 [OPTIONAL_ANG]" mass="2.0" width="0.10"
 	// diameter="0.30" />

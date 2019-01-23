@@ -15,6 +15,15 @@
 #include <stdexcept>
 #include <map>
 
+#include <mrpt/version.h>
+#if MRPT_VERSION<0x199
+#include <mrpt/utils/CTimeLogger.h>  
+using namespace mrpt::utils;
+#else
+#include <mrpt/system/CTimeLogger.h>
+using namespace mrpt::system;
+#endif
+
 using namespace mvsim;
 using namespace std;
 

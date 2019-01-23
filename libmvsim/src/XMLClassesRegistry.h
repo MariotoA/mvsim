@@ -10,6 +10,7 @@
 
 #include <rapidxml.hpp>
 
+#include <algorithm>
 #include <map>
 #include <string>
 

@@ -12,6 +12,15 @@
 #include <mvsim/WorldElements/WorldElementBase.h>
 #include <mrpt/opengl/CGridPlaneXY.h>
 
+#include <mrpt/version.h>
+#if MRPT_VERSION<0x199
+#include <mrpt/utils/TColor.h>
+using namespace mrpt::utils;
+#else
+#include <mrpt/img/TColor.h>
+using namespace mrpt::img;
+#endif
+
 namespace mvsim
 {
 class GroundGrid : public WorldElementBase

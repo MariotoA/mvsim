@@ -29,6 +29,21 @@ using namespace mrpt::maps;
 using namespace mrpt::slam;
 #endif
 
+#if MRPT_VERSION<0x199 
+#include <mrpt/utils/CObject.h>
+#include <mrpt/utils/CFileGZInputStream.h>
+#include <mrpt/utils/CSerializable.h>
+using namespace mrpt::utils;
+#else
+#include <mrpt/rtti/CObject.h>
+#include <mrpt/io/CFileGZInputStream.h>
+#include <mrpt/serialization/CSerializable.h>
+using namespace mrpt::rtti;
+using namespace mrpt::io;
+using namespace mrpt::serialization;
+#endif
+
+
 namespace mvsim
 {
 class OccupancyGridMap : public WorldElementBase

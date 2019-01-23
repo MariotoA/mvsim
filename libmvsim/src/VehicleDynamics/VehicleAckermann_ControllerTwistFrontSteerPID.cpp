@@ -10,6 +10,13 @@
 #include <mvsim/VehicleDynamics/VehicleAckermann.h>
 #include "xml_utils.h"
 
+#include <mrpt/version.h>
+#if MRPT_VERSION<0x199 
+using namespace mrpt::utils;
+#else
+using namespace mrpt;
+#endif
+
 using namespace mvsim;
 using namespace std;
 
@@ -27,8 +34,8 @@ DynamicsAckermann::ControllerTwistFrontSteerPID::ControllerTwistFrontSteerPID(
 	m_dist_fWheels =
 		m_veh.m_wheels_info[WHEEL_FL].y - m_veh.m_wheels_info[WHEEL_FR].y;
 	m_r2f_L = m_veh.m_wheels_info[WHEEL_FL].x - m_veh.m_wheels_info[WHEEL_RL].x;
-	ASSERT_(m_dist_fWheels > 0.0)
-	ASSERT_(m_r2f_L > 0.0)
+	ASSERT_(m_dist_fWheels > 0.0);
+	ASSERT_(m_r2f_L > 0.0);
 }
 
 // See base class docs
@@ -58,7 +65,7 @@ void DynamicsAckermann::ControllerTwistFrontSteerPID::control_step(
 	m_veh.getWheelsVelocityLocal(
 		desired_wheel_vels, vec3(setpoint_lin_speed, 0.0, setpoint_ang_speed));
 
-	ASSERT_(desired_wheel_vels.size() == 4)
+	ASSERT_(desired_wheel_vels.size() == 4);
 
 	// Rotate to obtain the actual desired longitudinal velocity for each wheel:
 	// FL:
@@ -89,7 +96,7 @@ void DynamicsAckermann::ControllerTwistFrontSteerPID::control_step(
 			odo_wheel_vels;  // In local vehicle frame
 		m_veh.getWheelsVelocityLocal(
 			odo_wheel_vels, m_veh.getVelocityLocalOdoEstimate());
-		ASSERT_(odo_wheel_vels.size() == 4)
+		ASSERT_(odo_wheel_vels.size() == 4);
 
 		const double actual_fl_steer_ang =
 			m_veh.getWheelInfo(DynamicsAckermann::WHEEL_FL).yaw;

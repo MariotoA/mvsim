@@ -10,6 +10,7 @@
 #include "XMLClassesRegistry.h"
 
 #include <iostream>
+#include <algorithm>
 
 #include <mrpt/version.h>
 #if MRPT_VERSION<0x199

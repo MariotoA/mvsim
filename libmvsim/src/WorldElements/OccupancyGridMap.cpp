@@ -13,10 +13,10 @@
 
 #include <mrpt/opengl/COpenGLScene.h>
 #include <mrpt/poses/CPose2D.h>
-#include <mrpt/utils/CFileGZInputStream.h>
 #include <mrpt/system/filesystem.h>
-#include <mrpt/utils/CObject.h>
 #include <rapidxml.hpp>
+
+#include <mrpt/serialization/CArchive.h>
 
 #include <mrpt/version.h>
 #if MRPT_VERSION >= 0x130
@@ -26,6 +26,7 @@ using mrpt::maps::CSimplePointsMap;
 #include <mrpt/slam/CSimplePointsMap.h>
 using mrpt::slam::CSimplePointsMap;
 #endif
+
 
 using namespace rapidxml;
 using namespace mvsim;
@@ -60,8 +61,18 @@ void OccupancyGridMap::loadConfigFrom(const rapidxml::xml_node<char>* root)
 	// MRPT gridmaps format:
 	if (sFileExt == "gridmap")
 	{
-		mrpt::utils::CFileGZInputStream f(sFile);
-		f >> m_grid;
+		//istream is = open(sf);
+		//mrpt::serialization::CArchive f(sFile);
+		//f >> m_grid;
+		//CFileInputStream f(sFile);
+		//in_s &gt;&gt; m_grid;
+		//TODO
+		//f >> m_grid;
+		//f.ReadObject(&m_grid);
+		//std::cout<<"HOLA\n";
+		//exit(-1);
+		//throw std::runtime_error(
+		//	"Error: Gridmap gz not implemented");
 	}
 	else
 	// Assume it's an image:
@@ -177,7 +188,7 @@ void OccupancyGridMap::simul_pre_timestep(const TSimulContext& context)
 				pose.x, pose.y,
 				0 /* angle=0, no need to rotate everything to later rotate back again! */);
 		}
-	}
+	}	
 
 	// For each object, create a ground body with fixtures at each scanned point
 	// around the vehicle, so it can collide with the environment:
@@ -226,7 +237,7 @@ void OccupancyGridMap::simul_pre_timestep(const TSimulContext& context)
 			{
 				b2BodyDef bdef;
 				ipv.collide_body = b2world->CreateBody(&bdef);
-				ASSERT_(ipv.collide_body)
+				ASSERT_(ipv.collide_body);
 			}
 			// Force move the body to the vehicle origins (to use obstacles in
 			// local coords):
@@ -287,7 +298,7 @@ void OccupancyGridMap::simul_pre_timestep(const TSimulContext& context)
 
 					b2PolygonShape* poly = dynamic_cast<b2PolygonShape*>(
 						ipv.collide_fixtures[k].fixture->GetShape());
-					ASSERT_(poly != NULL)
+					ASSERT_(poly != NULL);
 
 					const float llx = sincos_tab.ccos[k] * scan->scan[k];
 					const float lly = sincos_tab.csin[k] * scan->scan[k];

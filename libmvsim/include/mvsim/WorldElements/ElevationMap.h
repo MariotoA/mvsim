@@ -11,8 +11,17 @@
 
 #include <mvsim/WorldElements/WorldElementBase.h>
 #include <mrpt/opengl/CMesh.h>
+#include <mrpt/version.h>
+#if MRPT_VERSION<0x199 
 #include <mrpt/utils/TMatchingPair.h>
+using namespace mrpt::utils;
+#else
+#include <mrpt/tfest/TMatchingPair.h>
+using namespace mrpt::tfest;
+#endif
 #include <mrpt/poses/CPose3D.h>
+
+
 
 namespace mvsim
 {
@@ -48,7 +57,7 @@ class ElevationMap : public WorldElementBase
 
    private:
 	// temp vars (declared here to avoid reallocs):
-	mrpt::utils::TMatchingPairList corrs;
+	TMatchingPairList corrs;
 	mrpt::poses::CPose3D m_optimal_transf;
 };
 }

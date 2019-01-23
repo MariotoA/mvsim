@@ -52,7 +52,7 @@ void TParamEntry::parse(
 		std::string& str = *reinterpret_cast<std::string*>(val);
 		str = mrpt::system::trim(auxStr);
 	}
-	// "%lf_deg" ==> DEG2RAD()
+	// "%lf_deg" ==> mrpt::DEG2RAD()
 	else if (std::string(frmt) == std::string("%lf_deg"))
 	{
 		if (1 != ::sscanf(str.c_str(), frmt, val))
@@ -62,7 +62,7 @@ void TParamEntry::parse(
 					"format:'%s')",
 					function_name_context, varName.c_str(), str.c_str(), frmt));
 		double& ang = *reinterpret_cast<double*>(val);
-		ang = mrpt::utils::DEG2RAD(ang);
+		ang = mrpt::DEG2RAD(ang);
 	}
 	// "%bool" ==> bool*
 	else if (std::string(frmt) == std::string("%bool"))
@@ -118,7 +118,7 @@ void TParamEntry::parse(
 					function_name_context, varName.c_str(), str.c_str()));
 
 		// User provides angles in deg:
-		yaw = mrpt::utils::DEG2RAD(yaw);
+		yaw = mrpt::DEG2RAD(yaw);
 
 		const mrpt::poses::CPose2D p(x, y, yaw);
 
@@ -212,13 +212,13 @@ vec3 mvsim::parseXYPHI(
 	double default_angle_radians)
 {
 	vec3 v;
-	v.vals[2] = mrpt::utils::RAD2DEG(default_angle_radians);  // Default ang.
+	v.vals[2] = mrpt::RAD2DEG(default_angle_radians);  // Default ang.
 
 	int na =
 		::sscanf(s.c_str(), "%lf %lf %lf", &v.vals[0], &v.vals[1], &v.vals[2]);
 
 	// User provides numbers as degrees:
-	v.vals[2] = mrpt::utils::DEG2RAD(v.vals[2]);
+	v.vals[2] = mrpt::DEG2RAD(v.vals[2]);
 
 	if ((na != 3 && !allow_missing_angle) ||
 		(na != 2 && na != 3 && allow_missing_angle))

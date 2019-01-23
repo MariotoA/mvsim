@@ -10,6 +10,13 @@
 #include <mvsim/VehicleDynamics/VehicleAckermann_Drivetrain.h>
 #include "xml_utils.h"
 
+#include <mrpt/version.h>
+#if MRPT_VERSION<0x199 
+using namespace mrpt::utils;
+#else
+using namespace mrpt;
+#endif
+
 using namespace mvsim;
 using namespace std;
 
@@ -26,7 +33,7 @@ DynamicsAckermannDrivetrain::ControllerFrontSteerPID::ControllerFrontSteerPID(
 {
 	// Get distance between wheels:
 	m_r2f_L = m_veh.m_wheels_info[WHEEL_FL].x - m_veh.m_wheels_info[WHEEL_RL].x;
-	ASSERT_(m_r2f_L > 0.0)
+	ASSERT_(m_r2f_L > 0.0);
 }
 
 // See base class docs
@@ -98,14 +105,14 @@ void DynamicsAckermannDrivetrain::ControllerFrontSteerPID::teleop_interface(
 		case 'A':
 		case 'a':
 			setpoint_steer_ang += 1.0 * M_PI / 180.0;
-			mrpt::utils::keep_min(
+			keep_min(
 				setpoint_steer_ang, m_veh.getMaxSteeringAngle());
 			break;
 
 		case 'D':
 		case 'd':
 			setpoint_steer_ang -= 1.0 * M_PI / 180.0;
-			mrpt::utils::keep_max(
+			keep_max(
 				setpoint_steer_ang, -m_veh.getMaxSteeringAngle());
 			break;
 		case ' ':

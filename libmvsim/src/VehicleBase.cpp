@@ -7,6 +7,8 @@
   |   See <http://www.gnu.org/licenses/>                                    |
   +-------------------------------------------------------------------------+ */
 
+
+
 #include <mvsim/World.h>
 #include <mvsim/VehicleBase.h>
 #include <mvsim/VehicleDynamics/VehicleAckermann.h>
@@ -314,7 +316,7 @@ VehicleBase* VehicleBase::factory(
 			// Parse:
 			veh->m_friction = std::shared_ptr<FrictionBase>(
 				FrictionBase::factory(*veh, frict_node));
-			ASSERT_(veh->m_friction)
+			ASSERT_(veh->m_friction);
 		}
 	}
 
@@ -564,7 +566,7 @@ void VehicleBase::gui_update_common(
 				mrpt::opengl::CPolyhedron::CreateCustomPrism(
 					m_chassis_poly, m_chassis_z_max - m_chassis_z_min);
 			gl_poly->setLocation(0, 0, m_chassis_z_min);
-			gl_poly->setColor(TColorf(m_chassis_color));
+			gl_poly->setColor(mrpt::img::TColorf(m_chassis_color));
 			m_gl_chassis->insert(gl_poly);
 
 			SCENE_INSERT_Z_ORDER(scene, 1, m_gl_chassis);
@@ -627,7 +629,7 @@ void VehicleBase::updateMaxRadiusFromPoly()
 		 it != m_chassis_poly.end(); ++it)
 	{
 		const float n = it->norm();
-		mrpt::utils::keep_max(m_max_radius, n);
+		mrpt::keep_max(m_max_radius, n);
 	}
 }
 
@@ -645,8 +647,8 @@ void VehicleBase::create_multibody_system(b2World* world)
 	{
 		// Convert shape into Box2D format:
 		const size_t nPts = m_chassis_poly.size();
-		ASSERT_(nPts >= 3)
-		ASSERT_BELOWEQ_(nPts, (size_t)b2_maxPolygonVertices)
+		ASSERT_(nPts >= 3);
+		ASSERT_BELOWEQ_(nPts, (size_t)b2_maxPolygonVertices);
 		std::vector<b2Vec2> pts(nPts);
 		for (size_t i = 0; i < nPts; i++)
 			pts[i] = b2Vec2(m_chassis_poly[i].x, m_chassis_poly[i].y);
@@ -681,7 +683,7 @@ void VehicleBase::create_multibody_system(b2World* world)
 
 	// Define shape of wheels:
 	// ------------------------------
-	ASSERT_EQUAL_(m_fixture_wheels.size(), m_wheels_info.size())
+	ASSERT_EQUAL_(m_fixture_wheels.size(), m_wheels_info.size());
 
 	for (size_t i = 0; i < m_wheels_info.size(); i++)
 	{
@@ -766,7 +768,7 @@ void VehicleBase::writeLogStrings()
 void VehicleBase::apply_force(
 	double fx, double fy, double local_ptx, double local_pty)
 {
-	ASSERT_(m_b2d_vehicle_body)
+	ASSERT_(m_b2d_vehicle_body);
 	const b2Vec2 wPt = m_b2d_vehicle_body->GetWorldPoint(
 		b2Vec2(local_ptx, local_pty));  // Application point -> world coords
 	m_b2d_vehicle_body->ApplyForce(b2Vec2(fx, fy), wPt, true /*wake up*/);

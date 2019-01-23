@@ -155,7 +155,7 @@ void World::update_GUI(TUpdateGUIParams* guiparams)
 			mrpt::format(
 				"Time: %s",
 				mrpt::system::formatTimeInterval(this->m_simul_time).c_str()),
-			TColorf(1, 1, 1, 0.5), "serif", txt_h,
+			mrpt::img::TColorf(1, 1, 1, 0.5), "serif", txt_h,
 			mrpt::opengl::NICE, ID_GLTEXT_CLOCK);
 		txt_y += txt_h + space_h;
 
@@ -167,7 +167,7 @@ void World::update_GUI(TUpdateGUIParams* guiparams)
 			txt_y += nLines * (txt_h + space_h);
 			m_gui_win->addTextMessage(
 				2, txt_y, guiparams->msg_lines,
-				TColorf(1, 1, 1, 0.5), "serif", txt_h,
+				mrpt::img::TColorf(1, 1, 1, 0.5), "serif", txt_h,
 				mrpt::opengl::NICE, ID_GLTEXT_CLOCK + 1);
 		}
 	}

@@ -29,7 +29,6 @@ ENDIF(MSVC)
 
 INCLUDE_DIRECTORIES("${${PROJECT_NAME}_SOURCE_DIR}/src")
 INCLUDE_DIRECTORIES(".")
-
 # Declare the target (a library)
 ADD_LIBRARY(mvsim STATIC 
 	${ROOT_SRCS} 
